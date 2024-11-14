@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.mainPanel = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btn_CN = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.mainPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -46,63 +46,23 @@
             this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.btn_CN);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Location = new System.Drawing.Point(22, 70);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(182, 473);
             this.panel1.TabIndex = 0;
             // 
-            // mainPanel
+            // button6
             // 
-            this.mainPanel.Location = new System.Drawing.Point(231, 70);
-            this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(791, 473);
-            this.mainPanel.TabIndex = 1;
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(19, 67);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(139, 42);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "DANH SÁCH SINH VIÊN";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(19, 115);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(139, 42);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "CHUYÊN NGÀNH";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button3
-            // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(19, 163);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(139, 42);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "NHÓM MÔN HỌC";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button4
-            // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(19, 211);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(139, 42);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "HỌC KỲ";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button1_Click);
+            this.button6.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(19, 307);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(139, 42);
+            this.button6.TabIndex = 0;
+            this.button6.Text = "THỐNG KÊ SINH VIÊN";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button1_Click);
             // 
             // button5
             // 
@@ -115,16 +75,56 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button6
+            // button4
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(19, 307);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(139, 42);
-            this.button6.TabIndex = 0;
-            this.button6.Text = "THỐNG KÊ SINH VIÊN";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button1_Click);
+            this.button4.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(19, 211);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(139, 42);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "HỌC KỲ";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(19, 163);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(139, 42);
+            this.button3.TabIndex = 0;
+            this.button3.Text = "NHÓM MÔN HỌC";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btn_CN
+            // 
+            this.btn_CN.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_CN.Location = new System.Drawing.Point(19, 115);
+            this.btn_CN.Name = "btn_CN";
+            this.btn_CN.Size = new System.Drawing.Size(139, 42);
+            this.btn_CN.TabIndex = 0;
+            this.btn_CN.Text = "CHUYÊN NGÀNH";
+            this.btn_CN.UseVisualStyleBackColor = true;
+            this.btn_CN.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(19, 67);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(139, 42);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "DANH SÁCH SINH VIÊN";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // mainPanel
+            // 
+            this.mainPanel.Location = new System.Drawing.Point(231, 70);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(791, 473);
+            this.mainPanel.TabIndex = 1;
             // 
             // label1
             // 
@@ -164,7 +164,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_CN;
         private System.Windows.Forms.Label label1;
     }
 }
