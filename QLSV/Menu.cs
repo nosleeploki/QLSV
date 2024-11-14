@@ -38,6 +38,10 @@ namespace QLSV
         {
             loadMenu(new QLSV.DSSV.DSSV());
         }
-      
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

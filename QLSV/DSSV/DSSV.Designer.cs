@@ -35,14 +35,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btn_Add = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.qlsvDataSet1 = new QLSV.QLSVDataSet();
             this.qlsvDataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.sinhVienBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.sinh_VienTableAdapter = new QLSV.QLSVDataSetTableAdapters.Sinh_VienTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qlsvDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qlsvDataSet1BindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sinhVienBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -111,25 +108,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(800, 400);
             this.panel2.TabIndex = 2;
-            // 
-            // qlsvDataSet1
-            // 
-            this.qlsvDataSet1.DataSetName = "QLSVDataSet";
-            this.qlsvDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // qlsvDataSet1BindingSource
-            // 
-            this.qlsvDataSet1BindingSource.DataSource = this.qlsvDataSet1;
-            this.qlsvDataSet1BindingSource.Position = 0;
-            // 
-            // sinhVienBindingSource
-            // 
-            this.sinhVienBindingSource.DataMember = "Sinh_Vien";
-            this.sinhVienBindingSource.DataSource = this.qlsvDataSet1BindingSource;
-            // 
-            // sinh_VienTableAdapter
-            // 
-            this.sinh_VienTableAdapter.ClearBeforeFill = true;
+
             // 
             // DSSV
             // 
@@ -145,7 +124,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.qlsvDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qlsvDataSet1BindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sinhVienBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -160,9 +138,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_Add;
         private System.Windows.Forms.Panel panel2;
-        private QLSVDataSet qlsvDataSet1;
         private System.Windows.Forms.BindingSource qlsvDataSet1BindingSource;
         private System.Windows.Forms.BindingSource sinhVienBindingSource;
-        private QLSVDataSetTableAdapters.Sinh_VienTableAdapter sinh_VienTableAdapter;
     }
 }
