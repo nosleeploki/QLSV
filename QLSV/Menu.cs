@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaiTap.DSLHoc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -63,6 +64,11 @@ namespace QLSV
         {
             loadMenu(new HocKy.HocKy());
 
+        }
+
+        private void btnLopHoc_Click(object sender, EventArgs e)
+        {
+            loadMenu(new DSLHoc());
         }
     }
 }

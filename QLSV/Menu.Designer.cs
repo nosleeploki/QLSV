@@ -32,21 +32,21 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.btnLopHoc = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnLopHoc);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.button7);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Location = new System.Drawing.Point(22, 70);
             this.panel1.Name = "panel1";
@@ -85,17 +85,6 @@
             this.button2.Text = "CHUYÊN NGÀNH";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button5
-            // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(19, 259);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(139, 42);
-            this.button5.TabIndex = 0;
-            this.button5.Text = "LỚP HỌC";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button1_Click);
             // 
             // button1
             // 
@@ -138,6 +127,18 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // btnLopHoc
+            // 
+            this.btnLopHoc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLopHoc.Location = new System.Drawing.Point(19, 260);
+            this.btnLopHoc.Margin = new System.Windows.Forms.Padding(2);
+            this.btnLopHoc.Name = "btnLopHoc";
+            this.btnLopHoc.Size = new System.Drawing.Size(139, 42);
+            this.btnLopHoc.TabIndex = 5;
+            this.btnLopHoc.Text = "Lớp Học";
+            this.btnLopHoc.UseVisualStyleBackColor = true;
+            this.btnLopHoc.Click += new System.EventHandler(this.btnLopHoc_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,11 +162,11 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel mainPanel;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnLopHoc;
     }
 }
