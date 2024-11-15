@@ -46,6 +46,14 @@ namespace QLSV.DSSV
 
                     // Gán DataTable vào DataGridView
                     dataGridView1.DataSource = dataTable;
+
+                    dataGridView1.Columns["MaSinhVien"].HeaderText = "STT";
+                    dataGridView1.Columns["Ho"].HeaderText = "Họ";
+                    dataGridView1.Columns["Ten"].HeaderText = "Tên";
+                    dataGridView1.Columns["MaSoSinhVien"].HeaderText = "Mã Sinh Viên";
+                    dataGridView1.Columns["KhoaHoc"].HeaderText = "Khóa học";
+
+
                 }
                 catch (Exception ex)
                 {
@@ -183,21 +191,19 @@ namespace QLSV.DSSV
         private void DeleteStudent(int maSinhVien)
         {
             string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-            string query = "UPDATE Sinh_Vien SET DaXoa = 1 WHERE MaSinhVien = @MaSinhVien"; // Giả sử bạn sử dụng trường DaXoa để đánh dấu sinh viên đã xóa
+            string query = "UPDATE Sinh_Vien SET DaXoa = 1 WHERE MaSinhVien = @MaSinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
                         command.ExecuteNonQuery();
                     }
 
-                    // Tải lại dữ liệu vào DataGridView
                     LoadStudentData();
                     MessageBox.Show("Đã xóa sinh viên thành công.");
                 }
