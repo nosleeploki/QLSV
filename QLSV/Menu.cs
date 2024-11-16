@@ -1,4 +1,4 @@
-﻿using BaiTap.DSLHoc;
+﻿using QLSV.DSLHoc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -148,7 +148,7 @@ namespace QLSV
 
         private void btnLopHoc_Click(object sender, EventArgs e)
         {
-            loadMenu(new DSLHoc());
+            loadMenu(new DSLHoc.DSLHoc());
         }
 
         private void label1_Click(object sender, EventArgs e)

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BaiTap.DSLHoc
+namespace QLSV.DSLHoc
 {
     public partial class EditDSLH : Form
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QLSV.DSLHoc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BaiTap.DSLHoc
+namespace QLSV.DSLHoc
 {
     public partial class DSLHoc : Form
     {
@@ -130,8 +131,16 @@ namespace BaiTap.DSLHoc
 
         private void btnNhapDiem_Click(object sender, EventArgs e)
         {
-            NhapDiem nhapDiem = new NhapDiem();
-            nhapDiem.Show();
+            if (dataDSLH.SelectedRows.Count > 0)
+            {
+                int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
+                NhapDiem nhapDiemForm = new NhapDiem(maLop);
+                nhapDiemForm.Show();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn lớp học để nhập điểm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnDS_Click(object sender, EventArgs e)
@@ -144,40 +153,40 @@ namespace BaiTap.DSLHoc
                 // Chuỗi kết nối cơ sở dữ liệu
                 string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
 
-                // Truy vấn để lấy danh sách sinh viên trong lớp học cùng với loại điểm
                 string query = @"
-            SELECT 
-                MaSinhVien, 
-                HoTen,
-                [Điểm Giữa Kỳ] AS DiemGiuaKy,
-                [Điểm Cuối Kỳ] AS DiemCuoiKy,
-                [Điểm Chuyên Cần] AS DiemChuyenCan,
-                [Điểm thi kết thúc môn] AS DiemThiKetThucMon
-            FROM 
-            (
-                SELECT 
-                    SV.MaSinhVien, 
-                    SV.Ho + ' ' + SV.Ten AS HoTen, 
-                    LD.TenLoaiDiem, 
-                    D.GiaTriDiem
-                FROM 
-                    Sinh_Vien SV 
-                INNER JOIN 
-                    Ghi_Danh GD ON SV.MaSinhVien = GD.MaSinhVien 
-                INNER JOIN 
-                    Lop_Hoc LH ON GD.MaLop = LH.MaLop
-                LEFT JOIN 
-                    Diem D ON SV.MaSinhVien = D.MaSinhVien
-                LEFT JOIN 
-                    Loai_Dau_Diem LD ON D.MaLoaiDiem = LD.MaLoaiDiem
-                WHERE 
-                    LH.MaLop = @MaLop
-            ) AS SourceTable
-            PIVOT
-            (
-                MAX(GiaTriDiem)
-                FOR TenLoaiDiem IN ([Điểm Giữa Kỳ], [Điểm Cuối Kỳ], [Điểm Chuyên Cần], [Điểm thi kết thúc môn])
-            ) AS PivotTable;";
+                                SELECT 
+                                    MaSinhVien, 
+                                    HoTen,
+                                    [Điểm Giữa Kỳ] AS DiemGiuaKy,
+                                    [Điểm Cuối Kỳ] AS DiemCuoiKy,
+                                    [Điểm Chuyên Cần] AS DiemChuyenCan,
+                                    [Điểm Thi Kết Thúc Môn] AS DiemThiKetThucMon,
+                                    [Điểm Bài Tập] AS DiemBaiTap
+                                FROM 
+                                (
+                                    SELECT 
+                                        SV.MaSinhVien, 
+                                        SV.Ho + ' ' + SV.Ten AS HoTen, 
+                                        LD.TenLoaiDiem, 
+                                        D.GiaTriDiem
+                                    FROM 
+                                        Sinh_Vien SV 
+                                    INNER JOIN 
+                                        Ghi_Danh GD ON SV.MaSinhVien = GD.MaSinhVien 
+                                    INNER JOIN 
+                                        Lop_Hoc LH ON GD.MaLop = LH.MaLop
+                                    LEFT JOIN 
+                                        Diem D ON SV.MaSinhVien = D.MaSinhVien
+                                    LEFT JOIN 
+                                        Loai_Dau_Diem LD ON D.MaLoaiDiem = LD.MaLoaiDiem
+                                    WHERE 
+                                        LH.MaLop = @MaLop
+                                ) AS SourceTable
+                                PIVOT
+                                (
+                                    MAX(GiaTriDiem)
+                                    FOR TenLoaiDiem IN ([Điểm Giữa Kỳ], [Điểm Cuối Kỳ], [Điểm Chuyên Cần], [Điểm Thi Kết Thúc Môn], [Điểm Bài Tập])
+                                ) AS PivotTable;";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -191,21 +200,9 @@ namespace BaiTap.DSLHoc
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
-                        // Hiển thị danh sách sinh viên trong một form mới
-                        Form danhSachSinhVienForm = new Form();
-                        danhSachSinhVienForm.Text = "Danh Sách Sinh Viên Trong Lớp";
-
-                        DataGridView dgvSinhVien = new DataGridView
-                        {
-                            DataSource = dataTable,
-                            Dock = DockStyle.Fill,
-                            ReadOnly = true,
-                            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                        };
-
-                        danhSachSinhVienForm.Controls.Add(dgvSinhVien);
-                        danhSachSinhVienForm.Size = new Size(600, 400); // Tăng kích thước để đủ hiển thị
-                        danhSachSinhVienForm.ShowDialog();
+                        // Mở form DSSV và truyền dữ liệu
+                        DSSV formDSSV = new DSSV(maLop, dataTable);
+                        formDSSV.ShowDialog();
                     }
                     catch (Exception ex)
                     {

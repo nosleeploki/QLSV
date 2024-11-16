@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BaiTap.DSLHoc
+namespace QLSV.DSLHoc
 {
     public partial class AddDSSVvaoLopHoc : Form
     {
@@ -81,8 +81,8 @@ namespace BaiTap.DSLHoc
                         checkCommand.Parameters.AddWithValue("@MaLop", maLop);
                         int studentCount = (int)checkCommand.ExecuteScalar();
 
-                        // Nếu số lượng sinh viên trong lớp đã đạt 20, không cho thêm
-                        if (studentCount >= 20)
+                        // Nếu số lượng sinh viên trong lớp đã đạt 40, không cho thêm
+                        if (studentCount >= 40)
                         {
                             MessageBox.Show("Lớp học đã đủ sinh viên (tối đa 40 sinh viên).");
                             return;
@@ -98,6 +98,43 @@ namespace BaiTap.DSLHoc
 
                         command.ExecuteNonQuery();
                         MessageBox.Show("Thêm sinh viên vào lớp thành công!");
+
+                        // Truy vấn môn học duy nhất trong lớp
+                        string getMonHocQuery = @"
+                    SELECT TOP 1 MaMon 
+                    FROM Mon_Hoc 
+                    WHERE MaNhomMon = (SELECT MaNhomMon FROM Lop_Hoc WHERE MaLop = @MaLop)";
+
+                        using (SqlCommand getMonHocCommand = new SqlCommand(getMonHocQuery, connection))
+                        {
+                            getMonHocCommand.Parameters.AddWithValue("@MaLop", maLop);
+                            int maMon = Convert.ToInt32(getMonHocCommand.ExecuteScalar()); // Lấy MaMon duy nhất
+
+                            // Lấy mã điểm tối đa hiện tại và tăng lên
+                            string maxDiemQuery = "SELECT ISNULL(MAX(MaDiem), 0) + 1 FROM Diem";
+                            using (SqlCommand maxDiemCommand = new SqlCommand(maxDiemQuery, connection))
+                            {
+                                int maDiem = (int)maxDiemCommand.ExecuteScalar(); // Lấy MaDiem tiếp theo
+
+                                // Tạo 5 loại điểm cho sinh viên trong môn học duy nhất
+                                for (int i = 1; i <= 5; i++)
+                                {
+                                    string insertDiemQuery = "INSERT INTO Diem (MaDiem, MaSinhVien, MaLoaiDiem, GiaTriDiem, MaMon) " +
+                                                             "VALUES (@MaDiem, @MaSinhVien, @MaLoaiDiem, 0, @MaMon);";
+
+                                    using (SqlCommand insertDiemCommand = new SqlCommand(insertDiemQuery, connection))
+                                    {
+                                        insertDiemCommand.Parameters.AddWithValue("@MaDiem", maDiem); // MaDiem được tạo thủ công
+                                        insertDiemCommand.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                                        insertDiemCommand.Parameters.AddWithValue("@MaLoaiDiem", i); // Loại điểm từ 1 đến 5
+                                        insertDiemCommand.Parameters.AddWithValue("@MaMon", maMon); // Chỉ cho môn học duy nhất
+
+                                        insertDiemCommand.ExecuteNonQuery();  // Chạy câu lệnh INSERT
+                                        maDiem++;  // Tăng MaDiem để dùng cho bản ghi tiếp theo
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)

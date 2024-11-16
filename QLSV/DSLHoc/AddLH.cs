@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BaiTap.DSLHoc
+namespace QLSV.DSLHoc
 {
     public partial class AddLH : Form
     {
@@ -86,36 +86,83 @@ namespace BaiTap.DSLHoc
 
             // Chuỗi kết nối cơ sở dữ liệu
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-            string query = "INSERT INTO Lop_Hoc (MaLop, MaMon, MaHocKy, TenLop, DaXoa) VALUES (@MaLop, @MaMon, @MaHocKy, @TenLop, 0)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    try
                     {
-                        command.Parameters.AddWithValue("@MaLop", maLop);
-                        command.Parameters.AddWithValue("@MaMon", maMon);
-                        command.Parameters.AddWithValue("@MaHocKy", maHocKy);
-                        command.Parameters.AddWithValue("@TenLop", tenLop);
+                        // Thêm lớp học
+                        string queryLopHoc = "INSERT INTO Lop_Hoc (MaLop, MaMon, MaHocKy, TenLop, DaXoa) VALUES (@MaLop, @MaMon, @MaHocKy, @TenLop, 0)";
+                        using (SqlCommand command = new SqlCommand(queryLopHoc, connection, transaction))
+                        {
+                            command.CommandTimeout = 120; // Tăng thời gian chờ
+                            command.Parameters.AddWithValue("@MaLop", maLop);
+                            command.Parameters.AddWithValue("@MaMon", maMon);
+                            command.Parameters.AddWithValue("@MaHocKy", maHocKy);
+                            command.Parameters.AddWithValue("@TenLop", tenLop);
+                            command.ExecuteNonQuery();
+                        }
 
-                        command.ExecuteNonQuery();
+                        // Thêm các loại điểm mặc định
+                        string queryLoaiDiem = @"
+                                                INSERT INTO Loai_Dau_Diem (MaLoaiDiem, MaMon, TenLoaiDiem, TrongSo, DaXoa)
+                                                VALUES 
+                                                    (NEWID(), @MaMon, N'Điểm giữa kỳ', 0.3, 0),
+                                                    (NEWID(), @MaMon, N'Điểm cuối kỳ', 0.4, 0),
+                                                    (NEWID(), @MaMon, N'Điểm chuyên cần', 0.1, 0),
+                                                    (NEWID(), @MaMon, N'Điểm bài tập', 0.1, 0),
+                                                    (NEWID(), @MaMon, N'Điểm thi kết thúc môn', 0.1, 0);";
 
-                        MessageBox.Show("Thêm lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        using (SqlCommand commandLoaiDiem = new SqlCommand(queryLoaiDiem, connection, transaction))
+                        {
+                            commandLoaiDiem.CommandTimeout = 120; // Tăng thời gian chờ
+                            commandLoaiDiem.Parameters.AddWithValue("@MaMon", maMon);
+                            commandLoaiDiem.ExecuteNonQuery();
+                        }
+
+                        // Commit transaction
+                        transaction.Commit();
+                        MessageBox.Show("Thêm lớp học và các đầu điểm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // Kích hoạt sự kiện DataUpdated để thông báo cho form chính
                         DataUpdated?.Invoke(this, EventArgs.Empty);
 
                         this.Close(); // Đóng form sau khi lưu
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Có lỗi xảy ra khi thêm lớp học: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    catch (Exception ex)
+                    {
+                        // Rollback transaction nếu có lỗi
+                        transaction.Rollback();
+                        MessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
+
         }
+
+        private int GetNextMaLoaiDiem()
+        {
+            int nextId = 0;
+            string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT ISNULL(MAX(MaLoaiDiem), 0) + 1 FROM Loai_Dau_Diem";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    nextId = Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+
+            return nextId;
+        }
+
         private int GetNextMaLop()
         {
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
