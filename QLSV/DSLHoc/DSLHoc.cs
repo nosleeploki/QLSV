@@ -17,6 +17,8 @@ namespace BaiTap.DSLHoc
         {
             InitializeComponent();
             LoadData();
+            dataDSLH.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataDSLH.MultiSelect = false; // Chỉ cho phép chọn một hàng (nếu cần)
         }
 
         private void DSLHoc_Load(object sender, EventArgs e)
@@ -142,8 +144,40 @@ namespace BaiTap.DSLHoc
                 // Chuỗi kết nối cơ sở dữ liệu
                 string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
 
-                // Truy vấn để lấy danh sách sinh viên trong lớp học
-                string query = @" SELECT SV.MaSinhVien, SV.Ho + ' ' + SV.Ten AS HoTen FROM Sinh_Vien SV INNER JOIN Ghi_Danh GD ON SV.MaSinhVien = GD.MaSinhVien WHERE GD.MaLop = @MaLop";
+                // Truy vấn để lấy danh sách sinh viên trong lớp học cùng với loại điểm
+                string query = @"
+            SELECT 
+                MaSinhVien, 
+                HoTen,
+                [Điểm Giữa Kỳ] AS DiemGiuaKy,
+                [Điểm Cuối Kỳ] AS DiemCuoiKy,
+                [Điểm Chuyên Cần] AS DiemChuyenCan,
+                [Điểm thi kết thúc môn] AS DiemThiKetThucMon
+            FROM 
+            (
+                SELECT 
+                    SV.MaSinhVien, 
+                    SV.Ho + ' ' + SV.Ten AS HoTen, 
+                    LD.TenLoaiDiem, 
+                    D.GiaTriDiem
+                FROM 
+                    Sinh_Vien SV 
+                INNER JOIN 
+                    Ghi_Danh GD ON SV.MaSinhVien = GD.MaSinhVien 
+                INNER JOIN 
+                    Lop_Hoc LH ON GD.MaLop = LH.MaLop
+                LEFT JOIN 
+                    Diem D ON SV.MaSinhVien = D.MaSinhVien
+                LEFT JOIN 
+                    Loai_Dau_Diem LD ON D.MaLoaiDiem = LD.MaLoaiDiem
+                WHERE 
+                    LH.MaLop = @MaLop
+            ) AS SourceTable
+            PIVOT
+            (
+                MAX(GiaTriDiem)
+                FOR TenLoaiDiem IN ([Điểm Giữa Kỳ], [Điểm Cuối Kỳ], [Điểm Chuyên Cần], [Điểm thi kết thúc môn])
+            ) AS PivotTable;";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -160,6 +194,7 @@ namespace BaiTap.DSLHoc
                         // Hiển thị danh sách sinh viên trong một form mới
                         Form danhSachSinhVienForm = new Form();
                         danhSachSinhVienForm.Text = "Danh Sách Sinh Viên Trong Lớp";
+
                         DataGridView dgvSinhVien = new DataGridView
                         {
                             DataSource = dataTable,
@@ -167,8 +202,9 @@ namespace BaiTap.DSLHoc
                             ReadOnly = true,
                             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                         };
+
                         danhSachSinhVienForm.Controls.Add(dgvSinhVien);
-                        danhSachSinhVienForm.Size = new Size(500, 300);
+                        danhSachSinhVienForm.Size = new Size(600, 400); // Tăng kích thước để đủ hiển thị
                         danhSachSinhVienForm.ShowDialog();
                     }
                     catch (Exception ex)
@@ -190,7 +226,10 @@ namespace BaiTap.DSLHoc
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (e.RowIndex >= 0)
+            {
+                dataDSLH.Rows[e.RowIndex].Selected = true;
+            }
         }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panelDSLH = new System.Windows.Forms.Panel();
+            this.dataDSLH = new System.Windows.Forms.DataGridView();
             this.btnThem = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -37,10 +38,9 @@
             this.btnNhapDiem = new System.Windows.Forms.Button();
             this.btnDS = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dataDSLH = new System.Windows.Forms.DataGridView();
             this.panelDSLH.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataDSLH)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelDSLH
@@ -53,12 +53,27 @@
             this.panelDSLH.Size = new System.Drawing.Size(710, 443);
             this.panelDSLH.TabIndex = 0;
             // 
+            // dataDSLH
+            // 
+            this.dataDSLH.AllowUserToAddRows = false;
+            this.dataDSLH.AllowUserToDeleteRows = false;
+            this.dataDSLH.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataDSLH.ColumnHeadersHeight = 50;
+            this.dataDSLH.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataDSLH.Location = new System.Drawing.Point(0, 0);
+            this.dataDSLH.Name = "dataDSLH";
+            this.dataDSLH.ReadOnly = true;
+            this.dataDSLH.RowHeadersVisible = false;
+            this.dataDSLH.Size = new System.Drawing.Size(710, 443);
+            this.dataDSLH.TabIndex = 1;
+            this.dataDSLH.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
             // btnThem
             // 
             this.btnThem.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnThem.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThem.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnThem.Location = new System.Drawing.Point(2, 2);
+            this.btnThem.Location = new System.Drawing.Point(3, 10);
             this.btnThem.Margin = new System.Windows.Forms.Padding(2);
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(93, 43);
@@ -72,7 +87,7 @@
             this.btnEdit.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEdit.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnEdit.Location = new System.Drawing.Point(2, 49);
+            this.btnEdit.Location = new System.Drawing.Point(3, 57);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(2);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(93, 43);
@@ -86,7 +101,7 @@
             this.btnDelete.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnDelete.Location = new System.Drawing.Point(2, 96);
+            this.btnDelete.Location = new System.Drawing.Point(3, 104);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(93, 43);
@@ -100,7 +115,7 @@
             this.btnThoat.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThoat.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnThoat.Location = new System.Drawing.Point(2, 284);
+            this.btnThoat.Location = new System.Drawing.Point(3, 292);
             this.btnThoat.Margin = new System.Windows.Forms.Padding(2);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(93, 43);
@@ -114,7 +129,7 @@
             this.btnThemVoLop.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnThemVoLop.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThemVoLop.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnThemVoLop.Location = new System.Drawing.Point(2, 143);
+            this.btnThemVoLop.Location = new System.Drawing.Point(3, 151);
             this.btnThemVoLop.Margin = new System.Windows.Forms.Padding(2);
             this.btnThemVoLop.Name = "btnThemVoLop";
             this.btnThemVoLop.Size = new System.Drawing.Size(93, 43);
@@ -128,7 +143,7 @@
             this.btnNhapDiem.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnNhapDiem.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNhapDiem.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnNhapDiem.Location = new System.Drawing.Point(2, 237);
+            this.btnNhapDiem.Location = new System.Drawing.Point(3, 245);
             this.btnNhapDiem.Margin = new System.Windows.Forms.Padding(2);
             this.btnNhapDiem.Name = "btnNhapDiem";
             this.btnNhapDiem.Size = new System.Drawing.Size(93, 43);
@@ -142,7 +157,7 @@
             this.btnDS.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnDS.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDS.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnDS.Location = new System.Drawing.Point(2, 190);
+            this.btnDS.Location = new System.Drawing.Point(3, 198);
             this.btnDS.Margin = new System.Windows.Forms.Padding(2);
             this.btnDS.Name = "btnDS";
             this.btnDS.Size = new System.Drawing.Size(93, 43);
@@ -161,25 +176,10 @@
             this.panel1.Controls.Add(this.btnDelete);
             this.panel1.Controls.Add(this.btnThemVoLop);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(715, 0);
+            this.panel1.Location = new System.Drawing.Point(714, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(98, 443);
+            this.panel1.Size = new System.Drawing.Size(99, 443);
             this.panel1.TabIndex = 10;
-            // 
-            // dataDSLH
-            // 
-            this.dataDSLH.AllowUserToAddRows = false;
-            this.dataDSLH.AllowUserToDeleteRows = false;
-            this.dataDSLH.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataDSLH.ColumnHeadersHeight = 50;
-            this.dataDSLH.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataDSLH.Location = new System.Drawing.Point(0, 0);
-            this.dataDSLH.Name = "dataDSLH";
-            this.dataDSLH.ReadOnly = true;
-            this.dataDSLH.RowHeadersVisible = false;
-            this.dataDSLH.Size = new System.Drawing.Size(710, 443);
-            this.dataDSLH.TabIndex = 1;
-            this.dataDSLH.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // DSLHoc
             // 
@@ -195,8 +195,8 @@
             this.Text = "DSLHoc";
             this.Load += new System.EventHandler(this.DSLHoc_Load);
             this.panelDSLH.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataDSLH)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

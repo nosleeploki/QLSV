@@ -176,5 +176,21 @@ namespace QLSV.NhomMonHoc
                 MessageBox.Show("Vui lòng chọn một sinh viên để xóa.");
             }
         }
+
+        private void btnChiTiet_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int maNhom = Convert.ToInt32(dataGridView1.CurrentRow.Cells["MaNhomMon"].Value);
+                string tenNhom = dataGridView1.CurrentRow.Cells["TenNhomMon"].Value.ToString();
+
+                frmChiTiet frmChiTiet = new frmChiTiet(maNhom, tenNhom);
+                frmChiTiet.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn nhóm môn học để xem chi tiết!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

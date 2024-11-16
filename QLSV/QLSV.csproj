@@ -52,6 +52,12 @@
     <Compile Include="ChuyenNganh\frmAdd.Designer.cs">
       <DependentUpon>frmAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChuyenNganh\frmChiTiet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChuyenNganh\frmChiTiet.Designer.cs">
+      <DependentUpon>frmChiTiet.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChuyenNganh\frmCN.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,12 @@
     <Compile Include="NhomMonHoc\frmAdd.Designer.cs">
       <DependentUpon>frmAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="NhomMonHoc\frmChiTiet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NhomMonHoc\frmChiTiet.Designer.cs">
+      <DependentUpon>frmChiTiet.cs</DependentUpon>
+    </Compile>
     <Compile Include="NhomMonHoc\frmEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,8 +192,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Style.cs" />
     <EmbeddedResource Include="ChuyenNganh\frmAdd.resx">
       <DependentUpon>frmAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChuyenNganh\frmChiTiet.resx">
+      <DependentUpon>frmChiTiet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChuyenNganh\frmCN.resx">
       <DependentUpon>frmCN.cs</DependentUpon>
@@ -240,6 +256,9 @@
     <EmbeddedResource Include="NhomMonHoc\frmAdd.resx">
       <DependentUpon>frmAdd.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="NhomMonHoc\frmChiTiet.resx">
+      <DependentUpon>frmChiTiet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NhomMonHoc\frmEdit.resx">
       <DependentUpon>frmEdit.cs</DependentUpon>
     </EmbeddedResource>
@@ -293,6 +312,10 @@
   <ItemGroup>
     <None Include="Resources\tải xuống %281%29.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\background.jpg" />
+    <Content Include="Resources\images.png" />
+    <None Include="Resources\images1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -65,13 +65,32 @@ namespace BaiTap.DSLHoc
             int maSinhVien = Convert.ToInt32(cboCSV.SelectedValue);
 
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-            string query = "INSERT INTO Ghi_Danh (MaSinhVien, MaLop, SoLanVangMat) VALUES (@MaSinhVien, @MaLop, 0)";
+
+            // Truy vấn số lượng sinh viên trong lớp
+            string checkQuery = "SELECT COUNT(*) FROM Ghi_Danh WHERE MaLop = @MaLop";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
+
+                    // Kiểm tra số lượng sinh viên trong lớp
+                    using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@MaLop", maLop);
+                        int studentCount = (int)checkCommand.ExecuteScalar();
+
+                        // Nếu số lượng sinh viên trong lớp đã đạt 20, không cho thêm
+                        if (studentCount >= 20)
+                        {
+                            MessageBox.Show("Lớp học đã đủ sinh viên (tối đa 40 sinh viên).");
+                            return;
+                        }
+                    }
+
+                    // Thêm sinh viên vào lớp nếu lớp chưa đủ 40 sinh viên
+                    string query = "INSERT INTO Ghi_Danh (MaSinhVien, MaLop, SoLanVangMat) VALUES (@MaSinhVien, @MaLop, 0)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);

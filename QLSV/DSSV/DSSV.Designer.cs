@@ -33,10 +33,14 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.btn_Add = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.qlsvDataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.sinhVienBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btn_Add = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnPrevious = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -55,50 +59,50 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(800, 401);
+            this.dataGridView1.Size = new System.Drawing.Size(701, 450);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.panel1.Controls.Add(this.button6);
+            this.panel1.Controls.Add(this.btnPrevious);
+            this.panel1.Controls.Add(this.btnNext);
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.btn_Add);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 401);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel1.Location = new System.Drawing.Point(701, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 49);
+            this.panel1.Size = new System.Drawing.Size(99, 450);
             this.panel1.TabIndex = 1;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(564, 3);
+            this.button3.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button3.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button3.Location = new System.Drawing.Point(3, 110);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(185, 43);
+            this.button3.Size = new System.Drawing.Size(93, 43);
             this.button3.TabIndex = 0;
             this.button3.Text = "Xóa";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(309, 3);
+            this.button2.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button2.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button2.Location = new System.Drawing.Point(3, 61);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(185, 43);
+            this.button2.Size = new System.Drawing.Size(93, 43);
             this.button2.TabIndex = 0;
             this.button2.Text = "Sửa";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // btn_Add
-            // 
-            this.btn_Add.Location = new System.Drawing.Point(56, 3);
-            this.btn_Add.Name = "btn_Add";
-            this.btn_Add.Size = new System.Drawing.Size(185, 43);
-            this.btn_Add.TabIndex = 0;
-            this.btn_Add.Text = "Thêm";
-            this.btn_Add.UseVisualStyleBackColor = true;
-            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
             // panel2
             // 
@@ -106,8 +110,67 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(800, 401);
+            this.panel2.Size = new System.Drawing.Size(701, 450);
             this.panel2.TabIndex = 2;
+            // 
+            // btn_Add
+            // 
+            this.btn_Add.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btn_Add.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.btn_Add.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btn_Add.Location = new System.Drawing.Point(3, 12);
+            this.btn_Add.Name = "btn_Add";
+            this.btn_Add.Size = new System.Drawing.Size(93, 43);
+            this.btn_Add.TabIndex = 0;
+            this.btn_Add.Text = "Thêm";
+            this.btn_Add.UseVisualStyleBackColor = false;
+            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button1.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button1.Location = new System.Drawing.Point(50, 408);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(46, 30);
+            this.button1.TabIndex = 1;
+            this.button1.Text = ">>";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // btnNext
+            // 
+            this.btnNext.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnNext.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btnNext.Location = new System.Drawing.Point(50, 372);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(46, 30);
+            this.btnNext.TabIndex = 2;
+            this.btnNext.Text = ">";
+            this.btnNext.UseVisualStyleBackColor = false;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnPrevious.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btnPrevious.Location = new System.Drawing.Point(3, 372);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(46, 30);
+            this.btnPrevious.TabIndex = 3;
+            this.btnPrevious.Text = "<";
+            this.btnPrevious.UseVisualStyleBackColor = false;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button6.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button6.Location = new System.Drawing.Point(3, 408);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(46, 30);
+            this.button6.TabIndex = 4;
+            this.button6.Text = "<<";
+            this.button6.UseVisualStyleBackColor = false;
             // 
             // DSSV
             // 
@@ -135,9 +198,13 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button btn_Add;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.BindingSource qlsvDataSet1BindingSource;
         private System.Windows.Forms.BindingSource sinhVienBindingSource;
+        private System.Windows.Forms.Button btn_Add;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btnPrevious;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button button1;
     }
 }

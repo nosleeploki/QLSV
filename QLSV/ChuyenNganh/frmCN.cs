@@ -168,5 +168,21 @@ namespace QLSV.ChuyenNganh
                 MessageBox.Show("Vui lòng chọn một sinh viên để xóa.");
             }
         }
+
+        private void btnChiTiet_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int maChuyenNganh = Convert.ToInt32(dataGridView1.CurrentRow.Cells["MaChuyenNganh"].Value);
+                string tenChuyenNganh = dataGridView1.CurrentRow.Cells["TenChuyenNganh"].Value.ToString();
+
+                frmChiTiet frmChiTiet = new frmChiTiet(maChuyenNganh, tenChuyenNganh);
+                frmChiTiet.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một chuyên ngành để xem chi tiết.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
