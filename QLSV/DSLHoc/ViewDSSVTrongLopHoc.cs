@@ -36,8 +36,6 @@ namespace QLSV.DSLHoc
                 dataGridView1.Columns["DiemGiuaKy"].HeaderText = "Điểm Giữa Kỳ";
             if (danhSachSinhVien.Columns.Contains("DiemCuoiKy"))
                 dataGridView1.Columns["DiemCuoiKy"].HeaderText = "Điểm Cuối Kỳ";
-            if (danhSachSinhVien.Columns.Contains("DiemTongKet"))
-                dataGridView1.Columns["DiemTongKet"].HeaderText = "Tổng Điểm";
             if (danhSachSinhVien.Columns.Contains("DiemBaiTap1"))
                 dataGridView1.Columns["DiemBaiTap1"].HeaderText = "Bài Tập 1";
             if (danhSachSinhVien.Columns.Contains("DiemBaiTap2"))
@@ -46,6 +44,10 @@ namespace QLSV.DSLHoc
                 dataGridView1.Columns["DiemLab1"].HeaderText = "Lab 1";
             if (danhSachSinhVien.Columns.Contains("DiemLab2"))
                 dataGridView1.Columns["DiemLab2"].HeaderText = "Lab 2";
+            if (danhSachSinhVien.Columns.Contains("DiemChuyenCan"))
+                dataGridView1.Columns["DiemChuyenCan"].HeaderText = "Điểm Chuyên Cần";
+            if (danhSachSinhVien.Columns.Contains("DiemTongKet"))
+                dataGridView1.Columns["DiemTongKet"].HeaderText = "Tổng Điểm";
 
             // Tùy chỉnh chế độ hiển thị
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

@@ -166,7 +166,8 @@ namespace QLSV.DSLHoc
                                    md.DiemBaiTap1, 
                                    md.DiemBaiTap2, 
                                    md.DiemLab1, 
-                                   md.DiemLab2
+                                   md.DiemLab2,
+                                   md.DiemChuyenCan
                             FROM Sinh_Vien sv
                             INNER JOIN Ghi_Danh gd ON sv.MaSinhVien = gd.MaSinhVien
                             INNER JOIN Diem md ON sv.MaSinhVien = md.MaSinhVien AND gd.MaLop = md.MaLop
@@ -209,13 +210,13 @@ namespace QLSV.DSLHoc
             {
                 int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
 
-                // Khởi tạo form SVCheckin và truyền maLop
+                // Khởi tạo form SVCheckin và truyền MaLop
                 SVCheckin checkinForm = new SVCheckin(maLop);
-                checkinForm.Show();
+                checkinForm.ShowDialog(); // Mở form SVCheckin
             }
             else
             {
-                MessageBox.Show("Vui lòng chọn lớp học để điểm danh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn lớp học để xem thông tin điểm danh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

@@ -106,27 +106,11 @@ namespace QLSV.DSLHoc
                             command.ExecuteNonQuery();
                         }
 
-                        // Thêm các loại điểm mặc định
-                        string queryLoaiDiem = @"
-                                                INSERT INTO Loai_Dau_Diem (MaLoaiDiem, MaMon, TenLoaiDiem, TrongSo, DaXoa)
-                                                VALUES 
-                                                    (NEWID(), @MaMon, N'Điểm giữa kỳ', 0.3, 0),
-                                                    (NEWID(), @MaMon, N'Điểm cuối kỳ', 0.4, 0),
-                                                    (NEWID(), @MaMon, N'Điểm chuyên cần', 0.1, 0),
-                                                    (NEWID(), @MaMon, N'Điểm bài tập', 0.1, 0),
-                                                    (NEWID(), @MaMon, N'Điểm thi kết thúc môn', 0.1, 0);";
 
-
-                        using (SqlCommand commandLoaiDiem = new SqlCommand(queryLoaiDiem, connection, transaction))
-                        {
-                            commandLoaiDiem.CommandTimeout = 120; // Tăng thời gian chờ
-                            commandLoaiDiem.Parameters.AddWithValue("@MaMon", maMon);
-                            commandLoaiDiem.ExecuteNonQuery();
-                        }
 
                         // Commit transaction
                         transaction.Commit();
-                        MessageBox.Show("Thêm lớp học và các đầu điểm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                  
 
                         // Kích hoạt sự kiện DataUpdated để thông báo cho form chính
                         DataUpdated?.Invoke(this, EventArgs.Empty);

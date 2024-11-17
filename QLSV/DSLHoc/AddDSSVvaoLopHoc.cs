@@ -113,8 +113,8 @@ namespace QLSV.DSLHoc
                     }
 
                     // Tạo mã điểm mới
-                    string insertDiemQuery = "INSERT INTO Diem (MaSinhVien, MaLop, DiemGiuaKy, DiemCuoiKy, DiemTongKet, DiemBaiTap1, DiemBaiTap2, DiemLab1, DiemLab2) " +
-                                             "VALUES (@MaSinhVien, @MaLop, 0, 0, 0, 0, 0, 0, 0)";
+                    string insertDiemQuery = "INSERT INTO Diem (MaSinhVien, MaLop, DiemGiuaKy, DiemCuoiKy, DiemTongKet, DiemBaiTap1, DiemBaiTap2, DiemLab1, DiemLab2, DiemChuyenCan) " +
+                                             "VALUES (@MaSinhVien, @MaLop, 0, 0, 0, 0, 0, 0, 0, 10)";
                     using (SqlCommand insertDiemCommand = new SqlCommand(insertDiemQuery, connection))
                     {
                         insertDiemCommand.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
