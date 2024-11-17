@@ -1,4 +1,5 @@
-﻿using QLSV.DSLHoc;
+﻿using BaiTap.DSLHoc;
+using QLSV.DSLHoc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,7 +32,16 @@ namespace QLSV.DSLHoc
         private void LoadData()
         {
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-            string query = "SELECT MaLop, MaMon, MaHocKy, TenLop FROM dbo.Lop_Hoc WHERE DaXoa = 0";
+            string query = @"
+    SELECT 
+        lh.MaLop, 
+        lh.TenLop, 
+        mh.TenMon, 
+        hk.TenHocKy + ' (' + CAST(hk.Nam AS NVARCHAR) + ')' AS HocKyNam 
+    FROM Lop_Hoc lh
+    INNER JOIN Mon_Hoc mh ON lh.MaMon = mh.MaMon
+    INNER JOIN Hoc_Ky hk ON lh.MaHocKy = hk.MaHocKy
+    WHERE lh.DaXoa = 0";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -127,8 +137,21 @@ namespace QLSV.DSLHoc
 
         private void btnThemVoLop_Click(object sender, EventArgs e)
         {
-            AddDSSVvaoLopHoc add = new AddDSSVvaoLopHoc();
-            add.Show();
+            if (dataDSLH.SelectedRows.Count > 0)
+            {
+                // Lấy dữ liệu từ dòng được chọn
+                int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
+                string tenLopHoc = dataDSLH.SelectedRows[0].Cells["TenLop"].Value.ToString();
+                string tenMonHoc = dataDSLH.SelectedRows[0].Cells["TenMon"].Value.ToString();
+
+                // Khởi tạo formAddSV và truyền dữ liệu
+                frmAddSV addSVForm = new frmAddSV(maLop, tenLopHoc, tenMonHoc);
+                addSVForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một lớp học.");
+            }
         }
 
         private void btnDS_Click(object sender, EventArgs e)
@@ -138,15 +161,17 @@ namespace QLSV.DSLHoc
                 // Lấy mã lớp học từ dòng được chọn
                 int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
 
+                string TenLop = dataDSLH.SelectedRows[0].Cells["TenLop"].Value.ToString();  // Class name
+
                 // Lấy danh sách sinh viên và điểm
                 DataTable dtSinhVienDiem = GetSinhVienDiem(maLop);
 
                 // Hiển thị trên form ViewDSSVTrongLopHoc
                 if (dtSinhVienDiem != null)
                 {
-                    ViewDSSVTrongLopHoc form = new ViewDSSVTrongLopHoc(dtSinhVienDiem);
+                    ViewDSSVTrongLopHoc form = new ViewDSSVTrongLopHoc(dtSinhVienDiem, TenLop);
                     form.Show();
-                }
+                } 
             }
             else
             {
@@ -160,14 +185,13 @@ namespace QLSV.DSLHoc
             string query = @"
                             SELECT sv.MaSinhVien, 
                                    sv.Ho + ' ' + sv.Ten AS HoTen, 
-                                   md.DiemGiuaKy, 
-                                   md.DiemCuoiKy, 
-                                   md.DiemTongKet, 
+                                   md.DiemChuyenCan,                                   
                                    md.DiemBaiTap1, 
+                                   md.DiemLab1,
                                    md.DiemBaiTap2, 
-                                   md.DiemLab1, 
                                    md.DiemLab2,
-                                   md.DiemChuyenCan
+                                   md.DiemGiuaKy, 
+                                   md.DiemCuoiKy
                             FROM Sinh_Vien sv
                             INNER JOIN Ghi_Danh gd ON sv.MaSinhVien = gd.MaSinhVien
                             INNER JOIN Diem md ON sv.MaSinhVien = md.MaSinhVien AND gd.MaLop = md.MaLop

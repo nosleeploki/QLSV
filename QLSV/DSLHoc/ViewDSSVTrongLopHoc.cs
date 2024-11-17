@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,16 +15,20 @@ namespace QLSV.DSLHoc
     public partial class ViewDSSVTrongLopHoc : Form
     {
         private DataTable danhSachSinhVien;
+        private string TenLop;
 
-        public ViewDSSVTrongLopHoc(DataTable danhSachSinhVien)
+        public ViewDSSVTrongLopHoc(DataTable danhSachSinhVien, string TenLop)
         {
             InitializeComponent();
             this.danhSachSinhVien = danhSachSinhVien;
-            
-        } 
+            this.TenLop = TenLop;
+            label2.Text = TenLop;  // Display the class name in Label2
+
+        }
 
         private void ViewDSSVTrongLopHoc_Load(object sender, EventArgs e)
         {
+
             // Gán dữ liệu cho DataGridView
             dataGridView1.DataSource = danhSachSinhVien;
 
@@ -83,13 +88,23 @@ namespace QLSV.DSLHoc
                 int maSinhVien = Convert.ToInt32(row.Cells["MaSinhVien"].Value);
                 int diemGiuaKy = Convert.ToInt32(row.Cells["DiemGiuaKy"].Value);
                 int diemCuoiKy = Convert.ToInt32(row.Cells["DiemCuoiKy"].Value);
-                int diemTongKet = Convert.ToInt32(row.Cells["DiemTongKet"].Value);
                 int diemBaiTap1 = Convert.ToInt32(row.Cells["DiemBaiTap1"].Value);
                 int diemBaiTap2 = Convert.ToInt32(row.Cells["DiemBaiTap2"].Value);
                 int diemLab1 = Convert.ToInt32(row.Cells["DiemLab1"].Value);
                 int diemLab2 = Convert.ToInt32(row.Cells["DiemLab2"].Value);
+                int diemChuyenCan = Convert.ToInt32(row.Cells["DiemChuyenCan"].Value);
 
-                // Kết nối đến cơ sở dữ liệu để lấy MaLop
+                // Tính tổng điểm dưới dạng double
+                double tongDiem = (diemChuyenCan * 1 + diemGiuaKy * 2 + diemCuoiKy * 3 +
+                                   diemBaiTap1 * 2 + diemBaiTap2 * 2 + diemLab1 * 2 + diemLab2 * 2) / 14.0;
+
+                // Chuyển tổng điểm thành kiểu int (làm tròn giá trị)
+                int diemTongKet = Convert.ToInt32(tongDiem); // Làm tròn và chuyển sang int
+
+                // Xác định trạng thái pass/trượt
+                int pass = diemTongKet >= 5 ? 1 : 0;
+
+                // Lấy MaLop từ cơ sở dữ liệu
                 int maLop = -1;  // Khởi tạo với giá trị mặc định
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -124,16 +139,16 @@ namespace QLSV.DSLHoc
 
                 // Câu truy vấn cập nhật
                 string updateQuery = @"
-                                UPDATE Diem 
-                                SET 
-                                    DiemGiuaKy = @DiemGiuaKy,
-                                    DiemCuoiKy = @DiemCuoiKy,
-                                    DiemTongKet = @DiemTongKet,
-                                    DiemBaiTap1 = @DiemBaiTap1,
-                                    DiemBaiTap2 = @DiemBaiTap2,
-                                    DiemLab1 = @DiemLab1,
-                                    DiemLab2 = @DiemLab2
-                                WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop";
+                            UPDATE Diem 
+                            SET 
+                                DiemGiuaKy = @DiemGiuaKy,
+                                DiemCuoiKy = @DiemCuoiKy,
+                                DiemTongKet = @DiemTongKet,
+                                DiemBaiTap1 = @DiemBaiTap1,
+                                DiemBaiTap2 = @DiemBaiTap2,
+                                DiemLab1 = @DiemLab1,
+                                DiemLab2 = @DiemLab2
+                            WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop";
 
                 // Kết nối và thực hiện truy vấn cập nhật
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -145,7 +160,7 @@ namespace QLSV.DSLHoc
                         command.Parameters.AddWithValue("@MaLop", maLop);  // Sử dụng MaLop lấy từ cơ sở dữ liệu
                         command.Parameters.AddWithValue("@DiemGiuaKy", diemGiuaKy);
                         command.Parameters.AddWithValue("@DiemCuoiKy", diemCuoiKy);
-                        command.Parameters.AddWithValue("@DiemTongKet", diemTongKet);
+                        command.Parameters.AddWithValue("@DiemTongKet", diemTongKet); // Sử dụng diemTongKet kiểu int
                         command.Parameters.AddWithValue("@DiemBaiTap1", diemBaiTap1);
                         command.Parameters.AddWithValue("@DiemBaiTap2", diemBaiTap2);
                         command.Parameters.AddWithValue("@DiemLab1", diemLab1);

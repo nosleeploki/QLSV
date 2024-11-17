@@ -51,7 +51,7 @@ namespace QLSV.DSLHoc
                         // Đặt tiêu đề cột
                         dataGridView1.Columns["MaSinhVien"].HeaderText = "Mã SV";
                         dataGridView1.Columns["HoTen"].HeaderText = "Họ Tên";
-                        dataGridView1.Columns["SoLanVangMat"].HeaderText = "Số lần vắng mặt";
+                        dataGridView1.Columns["SoLanVangMat"].HeaderText = "Số tiết vắng mặt";
 
                         // Chỉ cho phép sửa cột "SoLanVangMat"
                         dataGridView1.Columns["MaSinhVien"].ReadOnly = true;
@@ -100,6 +100,10 @@ namespace QLSV.DSLHoc
 
                 // Cập nhật số lần vắng mặt và điểm chuyên cần
                 UpdateSoLanVangMatVaDiemChuyenCan(connectionString, maSinhVien, _maLop, soLanVangMat, diemChuyenCan);
+
+                // Tính và cập nhật trạng thái Pass (nếu DiemChuyenCan < 7, Pass = 0; ngược lại Pass = 1)
+                int pass = diemChuyenCan < 7 ? 0 : 1;
+                UpdatePass(connectionString, maSinhVien, _maLop, pass);
             }
 
             MessageBox.Show("Cập nhật điểm chuyên cần thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -135,17 +139,45 @@ namespace QLSV.DSLHoc
             return soBuoiHoc;
         }
 
+        private void UpdatePass(string connectionString, int maSinhVien, int maLop, int pass)
+        {
+            string query = @"
+                            UPDATE Diem
+                            SET Pass = @Pass
+                            WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;
+                        ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                        command.Parameters.AddWithValue("@MaLop", maLop);
+                        command.Parameters.AddWithValue("@Pass", pass);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật trạng thái Pass: " + ex.Message);
+                }
+            }
+        }
+
         private void UpdateSoLanVangMatVaDiemChuyenCan(string connectionString, int maSinhVien, int maLop, int soLanVangMat, double diemChuyenCan)
         {
             string query = @"
-        UPDATE Ghi_Danh
-        SET SoLanVangMat = @SoLanVangMat
-        WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;
+                            UPDATE Ghi_Danh
+                            SET SoLanVangMat = @SoLanVangMat
+                            WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;
 
-        UPDATE Diem
-        SET DiemChuyenCan = @DiemChuyenCan
-        WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;
-    ";
+                            UPDATE Diem
+                            SET DiemChuyenCan = @DiemChuyenCan
+                            WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;
+                        ";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

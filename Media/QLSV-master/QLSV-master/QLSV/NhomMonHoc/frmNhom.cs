@@ -13,7 +13,6 @@ namespace QLSV.NhomMonHoc
 {
     public partial class frmNhom : Form
     {
-        private string _connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
         public frmNhom()
         {
             InitializeComponent();

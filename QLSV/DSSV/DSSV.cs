@@ -325,5 +325,10 @@ namespace QLSV.DSSV
                 MessageBox.Show("Đây là trang đầu tiên.");
             }
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -1,15 +1,19 @@
-﻿using System;
+﻿using BaiTap.DSLHoc;
+using QLSV.DSLHoc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BaiTap.DSLHoc
+namespace QLSV.DSLHoc
 {
     public partial class DSLHoc : Form
     {
@@ -17,6 +21,8 @@ namespace BaiTap.DSLHoc
         {
             InitializeComponent();
             LoadData();
+            dataDSLH.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataDSLH.MultiSelect = false; // Chỉ cho phép chọn một hàng (nếu cần)
         }
 
         private void DSLHoc_Load(object sender, EventArgs e)
@@ -26,7 +32,16 @@ namespace BaiTap.DSLHoc
         private void LoadData()
         {
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-            string query = "SELECT MaLop, MaMon, MaHocKy, TenLop FROM dbo.Lop_Hoc WHERE DaXoa = 0";
+            string query = @"
+                SELECT 
+                    lh.MaLop, 
+                    lh.TenLop, 
+                    mh.TenMon, 
+                    hk.TenHocKy + ' (' + CAST(hk.Nam AS NVARCHAR) + ')' AS HocKyNam 
+                FROM Lop_Hoc lh
+                INNER JOIN Mon_Hoc mh ON lh.MaMon = mh.MaMon
+                INNER JOIN Hoc_Ky hk ON lh.MaHocKy = hk.MaHocKy
+                WHERE lh.DaXoa = 0";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -47,7 +62,7 @@ namespace BaiTap.DSLHoc
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            AddLH addForm = new AddLH();
+            frmAddLH addForm = new frmAddLH();
             addForm.FormClosed += (s, args) => LoadData(); // Tải lại dữ liệu khi form đóng
             addForm.ShowDialog();
         }
@@ -122,59 +137,38 @@ namespace BaiTap.DSLHoc
 
         private void btnThemVoLop_Click(object sender, EventArgs e)
         {
-            AddDSSVvaoLopHoc add = new AddDSSVvaoLopHoc();
-            add.Show();
-        }
+            if (dataDSLH.SelectedRows.Count > 0)
+            {
+                // Lấy dữ liệu từ dòng được chọn
+                int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
+                string tenLopHoc = dataDSLH.SelectedRows[0].Cells["TenLop"].Value.ToString();
+                string tenMonHoc = dataDSLH.SelectedRows[0].Cells["TenMon"].Value.ToString();
 
-        private void btnNhapDiem_Click(object sender, EventArgs e)
-        {
-            NhapDiem nhapDiem = new NhapDiem();
-            nhapDiem.Show();
+                // Khởi tạo formAddSV và truyền dữ liệu
+                frmAddSV addSVForm = new frmAddSV(maLop, tenLopHoc, tenMonHoc);
+                addSVForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một lớp học.");
+            }
         }
 
         private void btnDS_Click(object sender, EventArgs e)
         {
             if (dataDSLH.SelectedRows.Count > 0)
             {
-                // Lấy MaLop của lớp được chọn
+                // Lấy mã lớp học từ dòng được chọn
                 int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
 
-                // Chuỗi kết nối cơ sở dữ liệu
-                string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
+                // Lấy danh sách sinh viên và điểm
+                DataTable dtSinhVienDiem = GetSinhVienDiem(maLop);
 
-                // Truy vấn để lấy danh sách sinh viên trong lớp học
-                string query = @" SELECT SV.MaSinhVien, SV.Ho + ' ' + SV.Ten AS HoTen FROM Sinh_Vien SV INNER JOIN Ghi_Danh GD ON SV.MaSinhVien = GD.MaSinhVien WHERE GD.MaLop = @MaLop";
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                // Hiển thị trên form ViewDSSVTrongLopHoc
+                if (dtSinhVienDiem != null)
                 {
-                    try
-                    {
-                        connection.Open();
-                        SqlCommand command = new SqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@MaLop", maLop);
-
-                        SqlDataAdapter adapter = new SqlDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-
-                        // Hiển thị danh sách sinh viên trong một form mới
-                        Form danhSachSinhVienForm = new Form();
-                        danhSachSinhVienForm.Text = "Danh Sách Sinh Viên Trong Lớp";
-                        DataGridView dgvSinhVien = new DataGridView
-                        {
-                            DataSource = dataTable,
-                            Dock = DockStyle.Fill,
-                            ReadOnly = true,
-                            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                        };
-                        danhSachSinhVienForm.Controls.Add(dgvSinhVien);
-                        danhSachSinhVienForm.Size = new Size(500, 300);
-                        danhSachSinhVienForm.ShowDialog();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Có lỗi xảy ra khi lấy danh sách sinh viên: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    ViewDSSVTrongLopHoc form = new ViewDSSVTrongLopHoc(dtSinhVienDiem);
+                    form.Show();
                 }
             }
             else
@@ -183,14 +177,69 @@ namespace BaiTap.DSLHoc
             }
         }
 
-        private void dataDSLH_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private DataTable GetSinhVienDiem(int maLop)
         {
+            string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
+            string query = @"
+                            SELECT sv.MaSinhVien, 
+                                   sv.Ho + ' ' + sv.Ten AS HoTen, 
+                                   md.DiemGiuaKy, 
+                                   md.DiemCuoiKy, 
+                                   md.DiemTongKet, 
+                                   md.DiemBaiTap1, 
+                                   md.DiemBaiTap2, 
+                                   md.DiemLab1, 
+                                   md.DiemLab2
+                            FROM Sinh_Vien sv
+                            INNER JOIN Ghi_Danh gd ON sv.MaSinhVien = gd.MaSinhVien
+                            INNER JOIN Diem md ON sv.MaSinhVien = md.MaSinhVien AND gd.MaLop = md.MaLop
+                            WHERE gd.MaLop = @MaLop";
 
+            DataTable dt = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@MaLop", maLop);
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(dt);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: " + ex.Message);
+                }
+            }
+            return dt;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                dataDSLH.Rows[e.RowIndex].Selected = true;
+            }
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dataDSLH.SelectedRows.Count > 0)
+            {
+                int maLop = Convert.ToInt32(dataDSLH.SelectedRows[0].Cells["MaLop"].Value);
+
+                // Khởi tạo form SVCheckin và truyền maLop
+                /*SVCheckin checkinForm = new SVCheckin(maLop);
+                checkinForm.Show();*/
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn lớp học để điểm danh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

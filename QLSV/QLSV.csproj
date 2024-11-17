@@ -70,12 +70,6 @@
     <Compile Include="ChuyenNganh\frmEdit.Designer.cs">
       <DependentUpon>frmEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="DSLHoc\AddDSSVvaoLopHoc.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DSLHoc\AddDSSVvaoLopHoc.Designer.cs">
-      <DependentUpon>AddDSSVvaoLopHoc.cs</DependentUpon>
-    </Compile>
     <Compile Include="DSLHoc\AddLH.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,11 +88,11 @@
     <Compile Include="DSLHoc\EditDSLH.Designer.cs">
       <DependentUpon>EditDSLH.cs</DependentUpon>
     </Compile>
-    <Compile Include="DSLHoc\editScore.cs">
+    <Compile Include="DSLHoc\frmAddSV.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DSLHoc\editScore.Designer.cs">
-      <DependentUpon>editScore.cs</DependentUpon>
+    <Compile Include="DSLHoc\frmAddSV.Designer.cs">
+      <DependentUpon>frmAddSV.cs</DependentUpon>
     </Compile>
     <Compile Include="DSLHoc\SVCheckin.cs">
       <SubType>Form</SubType>
@@ -117,6 +111,12 @@
     </Compile>
     <Compile Include="DSLHoc\ViewDSSVTrongLopHoc.Designer.cs">
       <DependentUpon>ViewDSSVTrongLopHoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DSSV\AddDSSVvaoLopHoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DSSV\AddDSSVvaoLopHoc.Designer.cs">
+      <DependentUpon>AddDSSVvaoLopHoc.cs</DependentUpon>
     </Compile>
     <Compile Include="DSSV\DSSV.cs">
       <SubType>Form</SubType>
@@ -217,9 +217,6 @@
     <EmbeddedResource Include="ChuyenNganh\frmEdit.resx">
       <DependentUpon>frmEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DSLHoc\AddDSSVvaoLopHoc.resx">
-      <DependentUpon>AddDSSVvaoLopHoc.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DSLHoc\AddLH.resx">
       <DependentUpon>AddLH.cs</DependentUpon>
     </EmbeddedResource>
@@ -229,8 +226,8 @@
     <EmbeddedResource Include="DSLHoc\EditDSLH.resx">
       <DependentUpon>EditDSLH.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DSLHoc\editScore.resx">
-      <DependentUpon>editScore.cs</DependentUpon>
+    <EmbeddedResource Include="DSLHoc\frmAddSV.resx">
+      <DependentUpon>frmAddSV.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSLHoc\SVCheckin.resx">
       <DependentUpon>SVCheckin.cs</DependentUpon>
@@ -240,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DSLHoc\ViewDSSVTrongLopHoc.resx">
       <DependentUpon>ViewDSSVTrongLopHoc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DSSV\AddDSSVvaoLopHoc.resx">
+      <DependentUpon>AddDSSVvaoLopHoc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSSV\DSSV.resx">
       <DependentUpon>DSSV.cs</DependentUpon>

@@ -1,4 +1,4 @@
-﻿namespace BaiTap.DSLHoc
+﻿namespace QLSV.DSLHoc
 {
     partial class EditDSLH
     {

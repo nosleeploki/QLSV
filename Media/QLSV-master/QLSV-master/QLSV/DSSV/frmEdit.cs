@@ -79,18 +79,47 @@ namespace QLSV.DSSV
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Lưu thông tin sinh viên vào cơ sở dữ liệu
+            // Lấy thông tin từ các TextBox và điều khiển khác
+            string email = txtEmail.Text;
+            string soDienThoai = txtSoDienThoai.Text;
+            string cmnd = txtCMND.Text;
+
+            // Kiểm tra các TextBox có rỗng không
+            if (string.IsNullOrEmpty(txtHo.Text) || string.IsNullOrEmpty(txtTen.Text) || string.IsNullOrEmpty(email) ||
+                string.IsNullOrEmpty(soDienThoai) || string.IsNullOrEmpty(txtDiaChi.Text))
+            {
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin sinh viên.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra trùng lặp CMND, Email và Số điện thoại
             string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-            string query = "UPDATE Sinh_Vien SET Ho = @Ho, Ten = @Ten, " +
-                           "Email = @Email, SoDienThoai = @SoDienThoai, MaChuyenNganh = @MaChuyenNganh, " +
-                           "GioiTinh = @GioiTinh, DiaChi = @DiaChi, CMND = @CMND, KhoaHoc = @KhoaHoc, " +
-                           "NgaySinh = @NgaySinh, GhiChu = @GhiChu WHERE MaSinhVien = @MaSinhVien";
+            string queryCheckDuplicates = "SELECT COUNT(*) FROM Sinh_Vien WHERE (CMND = @CMND OR Email = @Email OR SoDienThoai = @SoDienThoai) AND MaSinhVien != @MaSinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
+                    SqlCommand cmdCheck = new SqlCommand(queryCheckDuplicates, connection);
+                    cmdCheck.Parameters.AddWithValue("@CMND", cmnd);
+                    cmdCheck.Parameters.AddWithValue("@Email", email);
+                    cmdCheck.Parameters.AddWithValue("@SoDienThoai", soDienThoai);
+                    cmdCheck.Parameters.AddWithValue("@MaSinhVien", maSinhVien); // Exclude current student
+
+                    int duplicateCount = (int)cmdCheck.ExecuteScalar();
+
+                    if (duplicateCount > 0)
+                    {
+                        MessageBox.Show("Thông tin CMND, Email hoặc Số điện thoại đã tồn tại trong cơ sở dữ liệu. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Câu lệnh SQL để cập nhật thông tin sinh viên
+                    string query = "UPDATE Sinh_Vien SET Ho = @Ho, Ten = @Ten, " +
+                                   "Email = @Email, SoDienThoai = @SoDienThoai, MaChuyenNganh = @MaChuyenNganh, " +
+                                   "GioiTinh = @GioiTinh, DiaChi = @DiaChi, CMND = @CMND, KhoaHoc = @KhoaHoc, " +
+                                   "NgaySinh = @NgaySinh, GhiChu = @GhiChu WHERE MaSinhVien = @MaSinhVien";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {

@@ -27,80 +27,78 @@ namespace QLSV.DSSV
             string maSinhVien = ""; // Mã sinh viên tự động sẽ được tạo
             string ho = txtHo.Text;
             string ten = txtTen.Text;
-            string maSoSinhVien = "";
             string email = txtEmail.Text;
             string soDienThoai = txtSoDienThoai.Text;
-            string maChuyenNganh = cbChuyenNganh.SelectedValue.ToString(); // Lấy MaChuyenNganh từ ComboBox
-            string gioiTinh = cbGioiTinh.SelectedItem.ToString(); // Lấy giới tính từ ComboBox
-            string diaChi = txtDiaChi.Text;
             string cmnd = txtCMND.Text;
-            string khoaHoc = txtKhoaHoc.Text;
-            DateTime ngaySinh = dtpNgaySinh.Value; // Lấy ngày sinh từ DateTimePicker
-            string ghiChu = txtGhiChu.Text;
 
             // Kiểm tra các TextBox có rỗng không
             if (string.IsNullOrEmpty(ho) || string.IsNullOrEmpty(ten) || string.IsNullOrEmpty(email) ||
-                string.IsNullOrEmpty(soDienThoai) || string.IsNullOrEmpty(diaChi))
+                string.IsNullOrEmpty(soDienThoai) || string.IsNullOrEmpty(cmnd))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin sinh viên.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Chuỗi kết nối cơ sở dữ liệu
+            // Kiểm tra trùng lặp CMND, Email và Số điện thoại
             string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
-
-            // Câu lệnh SQL để tìm MaSinhVien cao nhất hiện có
-            string queryGetMaxMaSinhVien = "SELECT MAX(MaSinhVien) FROM Sinh_Vien";
+            string queryCheckDuplicates = "SELECT COUNT(*) FROM Sinh_Vien WHERE CMND = @CMND OR Email = @Email OR SoDienThoai = @SoDienThoai";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
+                    SqlCommand cmdCheck = new SqlCommand(queryCheckDuplicates, connection);
+                    cmdCheck.Parameters.AddWithValue("@CMND", cmnd);
+                    cmdCheck.Parameters.AddWithValue("@Email", email);
+                    cmdCheck.Parameters.AddWithValue("@SoDienThoai", soDienThoai);
 
-                    // Tạo một câu lệnh SQL để lấy mã sinh viên lớn nhất
+                    int duplicateCount = (int)cmdCheck.ExecuteScalar();
+
+                    if (duplicateCount > 0)
+                    {
+                        MessageBox.Show("Thông tin CMND, Email hoặc Số điện thoại đã tồn tại trong cơ sở dữ liệu. Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Câu lệnh SQL để tìm MaSinhVien cao nhất hiện có
+                    string queryGetMaxMaSinhVien = "SELECT MAX(MaSinhVien) FROM Sinh_Vien";
                     SqlCommand cmdMaxMaSinhVien = new SqlCommand(queryGetMaxMaSinhVien, connection);
                     var result = cmdMaxMaSinhVien.ExecuteScalar();
                     int nextMaSinhVien = result == DBNull.Value ? 1 : Convert.ToInt32(result) + 1;
-
-                    // Gán giá trị cho MaSinhVien mới
-                    maSinhVien = nextMaSinhVien.ToString(); // MaSinhVien tự động tăng, ví dụ: "1", "2",...
-
-                    maSoSinhVien = "SV" + nextMaSinhVien.ToString("D3");
+                    maSinhVien = nextMaSinhVien.ToString();
+                    string maSoSinhVien = "SV" + nextMaSinhVien.ToString("D3");
 
                     // Câu lệnh SQL để thêm thông tin sinh viên
                     string queryInsert = "INSERT INTO Sinh_Vien (MaSinhVien, MaSoSinhVien, Ho, Ten, Email, SoDienThoai, MaChuyenNganh, GioiTinh, DiaChi, CMND, KhoaHoc, NgaySinh, GhiChu, DaXoa) " +
-                                 "VALUES (@MaSinhVien, @MaSoSinhVien, @Ho, @Ten, @Email, @SoDienThoai, @MaChuyenNganh, @GioiTinh, @DiaChi, @CMND, @KhoaHoc, @NgaySinh, @GhiChu, 0);";
+                                         "VALUES (@MaSinhVien, @MaSoSinhVien, @Ho, @Ten, @Email, @SoDienThoai, @MaChuyenNganh, @GioiTinh, @DiaChi, @CMND, @KhoaHoc, @NgaySinh, @GhiChu, 0);";
 
-                    using (SqlCommand command = new SqlCommand(queryInsert, connection))
-                    {
-                        // Thêm tham số vào câu lệnh SQL
-                        command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
-                        command.Parameters.AddWithValue("@MaSoSinhVien", maSoSinhVien); // Thêm Mã Số Sinh Viên vào CSDL
-                        command.Parameters.AddWithValue("@Ho", ho);
-                        command.Parameters.AddWithValue("@Ten", ten);
-                        command.Parameters.AddWithValue("@Email", email);
-                        command.Parameters.AddWithValue("@SoDienThoai", soDienThoai);
-                        command.Parameters.AddWithValue("@MaChuyenNganh", maChuyenNganh);
-                        command.Parameters.AddWithValue("@GioiTinh", gioiTinh == "Nam" ? "M" : "F");
-                        command.Parameters.AddWithValue("@DiaChi", diaChi);
-                        command.Parameters.AddWithValue("@CMND", cmnd);
-                        command.Parameters.AddWithValue("@KhoaHoc", khoaHoc);
-                        command.Parameters.AddWithValue("@NgaySinh", ngaySinh);
-                        command.Parameters.AddWithValue("@GhiChu", ghiChu);
+                    SqlCommand command = new SqlCommand(queryInsert, connection);
+                    command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                    command.Parameters.AddWithValue("@MaSoSinhVien", maSoSinhVien);
+                    command.Parameters.AddWithValue("@Ho", ho);
+                    command.Parameters.AddWithValue("@Ten", ten);
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@SoDienThoai", soDienThoai);
+                    command.Parameters.AddWithValue("@MaChuyenNganh", cbChuyenNganh.SelectedValue);
+                    command.Parameters.AddWithValue("@GioiTinh", cbGioiTinh.SelectedItem.ToString() == "Nam" ? "M" : "F");
+                    command.Parameters.AddWithValue("@DiaChi", txtDiaChi.Text);
+                    command.Parameters.AddWithValue("@CMND", cmnd);
+                    command.Parameters.AddWithValue("@KhoaHoc", txtKhoaHoc.Text);
+                    command.Parameters.AddWithValue("@NgaySinh", dtpNgaySinh.Value);
+                    command.Parameters.AddWithValue("@GhiChu", txtGhiChu.Text);
 
-                        // Thực thi câu lệnh SQL
-                        command.ExecuteNonQuery();
+                    // Thực thi câu lệnh SQL
+                    command.ExecuteNonQuery();
 
-                        // Thông báo thành công
-                        MessageBox.Show("Thêm sinh viên thành công! Mã số sinh viên: " + maSoSinhVien, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Thông báo thành công
+                    MessageBox.Show("Thêm sinh viên thành công! Mã số sinh viên: " + maSoSinhVien, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        // Kích hoạt sự kiện DataUpdated nếu có form nào lắng nghe
-                        DataUpdated?.Invoke(this, EventArgs.Empty);
+                    // Kích hoạt sự kiện DataUpdated nếu có form nào lắng nghe
+                    DataUpdated?.Invoke(this, EventArgs.Empty);
 
-                        // Đóng form hiện tại
-                        this.Close();
-                    }
+                    // Đóng form hiện tại
+                    this.Close();
                 }
                 catch (Exception ex)
                 {

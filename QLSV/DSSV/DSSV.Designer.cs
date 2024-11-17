@@ -31,16 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button6 = new System.Windows.Forms.Button();
+            this.btnPrevious = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.btn_Add = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.qlsvDataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.sinhVienBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btn_Add = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnNext = new System.Windows.Forms.Button();
-            this.btnPrevious = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -80,6 +80,53 @@
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button6.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button6.Location = new System.Drawing.Point(3, 408);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(46, 30);
+            this.button6.TabIndex = 4;
+            this.button6.Text = "<<";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnPrevious.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btnPrevious.Location = new System.Drawing.Point(3, 372);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(46, 30);
+            this.btnPrevious.TabIndex = 3;
+            this.btnPrevious.Text = "<";
+            this.btnPrevious.UseVisualStyleBackColor = false;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
+            // 
+            // btnNext
+            // 
+            this.btnNext.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnNext.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btnNext.Location = new System.Drawing.Point(50, 372);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(46, 30);
+            this.btnNext.TabIndex = 2;
+            this.btnNext.Text = ">";
+            this.btnNext.UseVisualStyleBackColor = false;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button1.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button1.Location = new System.Drawing.Point(50, 408);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(46, 30);
+            this.button1.TabIndex = 1;
+            this.button1.Text = ">>";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // button3
             // 
             this.button3.BackColor = System.Drawing.SystemColors.Highlight;
@@ -104,15 +151,6 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(701, 450);
-            this.panel2.TabIndex = 2;
-            // 
             // btn_Add
             // 
             this.btn_Add.BackColor = System.Drawing.SystemColors.MenuHighlight;
@@ -126,51 +164,14 @@
             this.btn_Add.UseVisualStyleBackColor = false;
             this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
-            // button1
+            // panel2
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button1.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.button1.Location = new System.Drawing.Point(50, 408);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(46, 30);
-            this.button1.TabIndex = 1;
-            this.button1.Text = ">>";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // btnNext
-            // 
-            this.btnNext.BackColor = System.Drawing.SystemColors.Highlight;
-            this.btnNext.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnNext.Location = new System.Drawing.Point(50, 372);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(46, 30);
-            this.btnNext.TabIndex = 2;
-            this.btnNext.Text = ">";
-            this.btnNext.UseVisualStyleBackColor = false;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-            // 
-            // btnPrevious
-            // 
-            this.btnPrevious.BackColor = System.Drawing.SystemColors.Highlight;
-            this.btnPrevious.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnPrevious.Location = new System.Drawing.Point(3, 372);
-            this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(46, 30);
-            this.btnPrevious.TabIndex = 3;
-            this.btnPrevious.Text = "<";
-            this.btnPrevious.UseVisualStyleBackColor = false;
-            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
-            // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button6.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.button6.Location = new System.Drawing.Point(3, 408);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(46, 30);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "<<";
-            this.button6.UseVisualStyleBackColor = false;
+            this.panel2.Controls.Add(this.dataGridView1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(701, 450);
+            this.panel2.TabIndex = 2;
             // 
             // DSSV
             // 

@@ -51,7 +51,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(699, 450);
+            this.dataGridView1.Size = new System.Drawing.Size(707, 450);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -63,9 +63,9 @@
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.btn_Add);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(701, 0);
+            this.panel1.Location = new System.Drawing.Point(704, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(99, 450);
+            this.panel1.Size = new System.Drawing.Size(96, 450);
             this.panel1.TabIndex = 5;
             // 
             // btnChiTiet
@@ -122,7 +122,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(699, 450);
+            this.panel2.Size = new System.Drawing.Size(707, 450);
             this.panel2.TabIndex = 6;
             // 
             // frmCN

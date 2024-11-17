@@ -67,10 +67,5 @@ namespace QLSV.HocKy
         {
 
         }
-
-        private void frmChiTiet_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

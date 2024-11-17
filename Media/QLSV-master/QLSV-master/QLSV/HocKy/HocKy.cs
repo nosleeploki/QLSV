@@ -13,11 +13,13 @@ namespace QLSV.HocKy
 {
     public partial class HocKy : Form
     {
+
         public HocKy()
         {
             InitializeComponent();
             LoadDataToDataGridView();
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false; // Chỉ cho phép chọn một hàng (nếu cần)
         }
         private void LoadDataToDataGridView()
         {
@@ -164,6 +166,17 @@ namespace QLSV.HocKy
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            // Kiểm tra xem có hàng nào được chọn hay không
+            if (e.RowIndex >= 0)
+            {
+                // Lấy mã sinh viên từ cột đầu tiên của hàng đã chọn
+                int maHocKy = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["MaHocKy"].Value);
+                dataGridView1.Rows[e.RowIndex].Selected = true;
+            }
         }
     }
 }
