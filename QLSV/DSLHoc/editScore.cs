@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,19 +13,20 @@ namespace QLSV.DSLHoc
 {
     public partial class editScore : Form
     {
-        public int MaLoaiDiem { get; set; }
-        public double GiaTriDiem { get; set; }
-        public editScore(int maLoaiDiem, double giaTriDiem)
+        private int maSinhVien;
+        private int maLoaiDiem;
+        private double diemHienTai;
+        public double NewScore { get; set; }
+
+        public editScore(int maSinhVien, int maLoaiDiem, double diemHienTai)
         {
             InitializeComponent();
-            MaLoaiDiem = maLoaiDiem;
-            GiaTriDiem = giaTriDiem;
-        }
+            this.maSinhVien = maSinhVien;
+            this.maLoaiDiem = maLoaiDiem;
+            this.diemHienTai = diemHienTai;
 
-        private void EditScoreForm_Load(object sender, EventArgs e)
-        {
-            // Hiển thị dữ liệu hiện tại lên form
-            txtGiaTriDiem.Text = GiaTriDiem.ToString();
+            // Hiển thị thông tin trên form
+            txtGiaTriDiem.Text = diemHienTai.ToString();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -32,19 +34,24 @@ namespace QLSV.DSLHoc
             this.Close();
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
-            // Cập nhật giá trị điểm mới
             if (double.TryParse(txtGiaTriDiem.Text, out double newScore))
             {
-                GiaTriDiem = newScore;
+                this.NewScore = newScore;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
+
             }
             else
             {
-                MessageBox.Show("Điểm nhập vào không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Điểm nhập không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void editScore_Load(object sender, EventArgs e)
+        {
         }
     }
 }

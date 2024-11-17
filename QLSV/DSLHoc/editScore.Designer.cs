@@ -73,6 +73,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "editScore";
             this.Text = "editScore";
+            this.Load += new System.EventHandler(this.editScore_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

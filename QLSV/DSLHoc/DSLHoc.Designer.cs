@@ -35,9 +35,9 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnThoat = new System.Windows.Forms.Button();
             this.btnThemVoLop = new System.Windows.Forms.Button();
-            this.btnNhapDiem = new System.Windows.Forms.Button();
             this.btnDS = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelDSLH.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataDSLH)).BeginInit();
             this.panel1.SuspendLayout();
@@ -115,7 +115,7 @@
             this.btnThoat.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThoat.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnThoat.Location = new System.Drawing.Point(3, 292);
+            this.btnThoat.Location = new System.Drawing.Point(4, 292);
             this.btnThoat.Margin = new System.Windows.Forms.Padding(2);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(93, 43);
@@ -138,20 +138,6 @@
             this.btnThemVoLop.UseVisualStyleBackColor = false;
             this.btnThemVoLop.Click += new System.EventHandler(this.btnThemVoLop_Click);
             // 
-            // btnNhapDiem
-            // 
-            this.btnNhapDiem.BackColor = System.Drawing.SystemColors.Highlight;
-            this.btnNhapDiem.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNhapDiem.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnNhapDiem.Location = new System.Drawing.Point(3, 245);
-            this.btnNhapDiem.Margin = new System.Windows.Forms.Padding(2);
-            this.btnNhapDiem.Name = "btnNhapDiem";
-            this.btnNhapDiem.Size = new System.Drawing.Size(93, 43);
-            this.btnNhapDiem.TabIndex = 8;
-            this.btnNhapDiem.Text = "Nhập điểm cho sinh viên";
-            this.btnNhapDiem.UseVisualStyleBackColor = false;
-            this.btnNhapDiem.Click += new System.EventHandler(this.btnNhapDiem_Click);
-            // 
             // btnDS
             // 
             this.btnDS.BackColor = System.Drawing.SystemColors.Highlight;
@@ -168,9 +154,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.btnThem);
             this.panel1.Controls.Add(this.btnThoat);
-            this.panel1.Controls.Add(this.btnNhapDiem);
             this.panel1.Controls.Add(this.btnDS);
             this.panel1.Controls.Add(this.btnEdit);
             this.panel1.Controls.Add(this.btnDelete);
@@ -180,6 +166,20 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(99, 443);
             this.panel1.TabIndex = 10;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button1.Location = new System.Drawing.Point(4, 245);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(93, 43);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Điểm Danh Sinh Viên";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // DSLHoc
             // 
@@ -209,9 +209,9 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnThoat;
         private System.Windows.Forms.Button btnThemVoLop;
-        private System.Windows.Forms.Button btnNhapDiem;
         private System.Windows.Forms.Button btnDS;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dataDSLH;
+        private System.Windows.Forms.Button button1;
     }
 }

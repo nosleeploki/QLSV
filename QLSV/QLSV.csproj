@@ -88,12 +88,6 @@
     <Compile Include="DSLHoc\DSLHoc.Designer.cs">
       <DependentUpon>DSLHoc.cs</DependentUpon>
     </Compile>
-    <Compile Include="DSLHoc\DSSV.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DSLHoc\DSSV.Designer.cs">
-      <DependentUpon>DSSV.cs</DependentUpon>
-    </Compile>
     <Compile Include="DSLHoc\EditDSLH.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,17 +100,23 @@
     <Compile Include="DSLHoc\editScore.Designer.cs">
       <DependentUpon>editScore.cs</DependentUpon>
     </Compile>
-    <Compile Include="DSLHoc\NhapDiem.cs">
+    <Compile Include="DSLHoc\SVCheckin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DSLHoc\NhapDiem.Designer.cs">
-      <DependentUpon>NhapDiem.cs</DependentUpon>
+    <Compile Include="DSLHoc\SVCheckin.Designer.cs">
+      <DependentUpon>SVCheckin.cs</DependentUpon>
     </Compile>
     <Compile Include="DSLHoc\ThongTinChiTiet.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DSLHoc\ThongTinChiTiet.Designer.cs">
       <DependentUpon>ThongTinChiTiet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DSLHoc\ViewDSSVTrongLopHoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DSLHoc\ViewDSSVTrongLopHoc.Designer.cs">
+      <DependentUpon>ViewDSSVTrongLopHoc.cs</DependentUpon>
     </Compile>
     <Compile Include="DSSV\DSSV.cs">
       <SubType>Form</SubType>
@@ -226,20 +226,20 @@
     <EmbeddedResource Include="DSLHoc\DSLHoc.resx">
       <DependentUpon>DSLHoc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DSLHoc\DSSV.resx">
-      <DependentUpon>DSSV.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DSLHoc\EditDSLH.resx">
       <DependentUpon>EditDSLH.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSLHoc\editScore.resx">
       <DependentUpon>editScore.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DSLHoc\NhapDiem.resx">
-      <DependentUpon>NhapDiem.cs</DependentUpon>
+    <EmbeddedResource Include="DSLHoc\SVCheckin.resx">
+      <DependentUpon>SVCheckin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSLHoc\ThongTinChiTiet.resx">
       <DependentUpon>ThongTinChiTiet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DSLHoc\ViewDSSVTrongLopHoc.resx">
+      <DependentUpon>ViewDSSVTrongLopHoc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DSSV\DSSV.resx">
       <DependentUpon>DSSV.cs</DependentUpon>

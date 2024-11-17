@@ -32,6 +32,7 @@ namespace QLSV.DSLHoc
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
+
                 cboChonLH.DataSource = dataTable;
                 cboChonLH.DisplayMember = "TenLop";
                 cboChonLH.ValueMember = "MaLop";
@@ -48,6 +49,7 @@ namespace QLSV.DSLHoc
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
+
                 cboCSV.DataSource = dataTable;
                 cboCSV.DisplayMember = "HoTen";
                 cboCSV.ValueMember = "MaSinhVien";
@@ -61,27 +63,39 @@ namespace QLSV.DSLHoc
 
         private void btnThemSV_Click(object sender, EventArgs e)
         {
-            int maLop = Convert.ToInt32(cboChonLH.SelectedValue);
-            int maSinhVien = Convert.ToInt32(cboCSV.SelectedValue);
+            maLop = Convert.ToInt32(cboChonLH.SelectedValue);
+            maSinhVien = Convert.ToInt32(cboCSV.SelectedValue);
 
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
 
-            // Truy vấn số lượng sinh viên trong lớp
-            string checkQuery = "SELECT COUNT(*) FROM Ghi_Danh WHERE MaLop = @MaLop";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    // Kiểm tra số lượng sinh viên trong lớp
+                    // Kiểm tra xem sinh viên đã có trong lớp chưa
+                    string checkQuery = "SELECT COUNT(*) FROM Ghi_Danh WHERE MaLop = @MaLop AND MaSinhVien = @MaSinhVien";
                     using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
                     {
                         checkCommand.Parameters.AddWithValue("@MaLop", maLop);
-                        int studentCount = (int)checkCommand.ExecuteScalar();
+                        checkCommand.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                        int existingRecordCount = (int)checkCommand.ExecuteScalar();
 
-                        // Nếu số lượng sinh viên trong lớp đã đạt 40, không cho thêm
+                        if (existingRecordCount > 0)
+                        {
+                            MessageBox.Show("Sinh viên này đã có trong lớp học.");
+                            return;
+                        }
+                    }
+
+                    // Kiểm tra số lượng sinh viên trong lớp
+                    string countQuery = "SELECT COUNT(*) FROM Ghi_Danh WHERE MaLop = @MaLop";
+                    using (SqlCommand countCommand = new SqlCommand(countQuery, connection))
+                    {
+                        countCommand.Parameters.AddWithValue("@MaLop", maLop);
+                        int studentCount = (int)countCommand.ExecuteScalar();
+
                         if (studentCount >= 40)
                         {
                             MessageBox.Show("Lớp học đã đủ sinh viên (tối đa 40 sinh viên).");
@@ -89,58 +103,31 @@ namespace QLSV.DSLHoc
                         }
                     }
 
-                    // Thêm sinh viên vào lớp nếu lớp chưa đủ 40 sinh viên
-                    string query = "INSERT INTO Ghi_Danh (MaSinhVien, MaLop, SoLanVangMat) VALUES (@MaSinhVien, @MaLop, 0)";
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    // Thêm sinh viên vào lớp
+                    string insertQuery = "INSERT INTO Ghi_Danh (MaSinhVien, MaLop, SoLanVangMat) VALUES (@MaSinhVien, @MaLop, 0)";
+                    using (SqlCommand command = new SqlCommand(insertQuery, connection))
                     {
                         command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
                         command.Parameters.AddWithValue("@MaLop", maLop);
-
                         command.ExecuteNonQuery();
-                        MessageBox.Show("Thêm sinh viên vào lớp thành công!");
-
-                        // Truy vấn môn học duy nhất trong lớp
-                        string getMonHocQuery = @"
-                    SELECT TOP 1 MaMon 
-                    FROM Mon_Hoc 
-                    WHERE MaNhomMon = (SELECT MaNhomMon FROM Lop_Hoc WHERE MaLop = @MaLop)";
-
-                        using (SqlCommand getMonHocCommand = new SqlCommand(getMonHocQuery, connection))
-                        {
-                            getMonHocCommand.Parameters.AddWithValue("@MaLop", maLop);
-                            int maMon = Convert.ToInt32(getMonHocCommand.ExecuteScalar()); // Lấy MaMon duy nhất
-
-                            // Lấy mã điểm tối đa hiện tại và tăng lên
-                            string maxDiemQuery = "SELECT ISNULL(MAX(MaDiem), 0) + 1 FROM Diem";
-                            using (SqlCommand maxDiemCommand = new SqlCommand(maxDiemQuery, connection))
-                            {
-                                int maDiem = (int)maxDiemCommand.ExecuteScalar(); // Lấy MaDiem tiếp theo
-
-                                // Tạo 5 loại điểm cho sinh viên trong môn học duy nhất
-                                for (int i = 1; i <= 5; i++)
-                                {
-                                    string insertDiemQuery = "INSERT INTO Diem (MaDiem, MaSinhVien, MaLoaiDiem, GiaTriDiem, MaMon) " +
-                                                             "VALUES (@MaDiem, @MaSinhVien, @MaLoaiDiem, 0, @MaMon);";
-
-                                    using (SqlCommand insertDiemCommand = new SqlCommand(insertDiemQuery, connection))
-                                    {
-                                        insertDiemCommand.Parameters.AddWithValue("@MaDiem", maDiem); // MaDiem được tạo thủ công
-                                        insertDiemCommand.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
-                                        insertDiemCommand.Parameters.AddWithValue("@MaLoaiDiem", i); // Loại điểm từ 1 đến 5
-                                        insertDiemCommand.Parameters.AddWithValue("@MaMon", maMon); // Chỉ cho môn học duy nhất
-
-                                        insertDiemCommand.ExecuteNonQuery();  // Chạy câu lệnh INSERT
-                                        maDiem++;  // Tăng MaDiem để dùng cho bản ghi tiếp theo
-                                    }
-                                }
-                            }
-                        }
                     }
+
+                    // Tạo mã điểm mới
+                    string insertDiemQuery = "INSERT INTO Diem (MaSinhVien, MaLop, DiemGiuaKy, DiemCuoiKy, DiemTongKet, DiemBaiTap1, DiemBaiTap2, DiemLab1, DiemLab2) " +
+                                             "VALUES (@MaSinhVien, @MaLop, 0, 0, 0, 0, 0, 0, 0)";
+                    using (SqlCommand insertDiemCommand = new SqlCommand(insertDiemQuery, connection))
+                    {
+                        insertDiemCommand.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                        insertDiemCommand.Parameters.AddWithValue("@MaLop", maLop);
+                        insertDiemCommand.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Thêm sinh viên vào lớp thành công!");
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Có lỗi xảy ra: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra: " + ex.Message);
             }
         }
 
