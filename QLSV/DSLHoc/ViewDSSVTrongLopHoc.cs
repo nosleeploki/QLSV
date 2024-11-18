@@ -16,13 +16,16 @@ namespace QLSV.DSLHoc
     {
         private DataTable danhSachSinhVien;
         private string TenLop;
+        private int MaLop;
 
-        public ViewDSSVTrongLopHoc(DataTable danhSachSinhVien, string TenLop)
+        public ViewDSSVTrongLopHoc(DataTable danhSachSinhVien, string TenLop, int MaLop)
         {
             InitializeComponent();
             this.danhSachSinhVien = danhSachSinhVien;
             this.TenLop = TenLop;
+            this.MaLop = MaLop;
             label2.Text = TenLop;  // Display the class name in Label2
+
 
         }
 
@@ -75,7 +78,33 @@ namespace QLSV.DSLHoc
         {
 
         }
+        private void UpdatePass(string connectionString, int maSinhVien, int maLop, int pass)
+        {
+            string query = @"
+                    UPDATE Diem
+                    SET Pass = @Pass
+                    WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;
+                ";
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                        command.Parameters.AddWithValue("@MaLop", maLop);
+                        command.Parameters.AddWithValue("@Pass", pass);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật trạng thái Pass: " + ex.Message);
+                }
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
@@ -100,55 +129,22 @@ namespace QLSV.DSLHoc
 
                 // Chuyển tổng điểm thành kiểu int (làm tròn giá trị)
                 int diemTongKet = Convert.ToInt32(tongDiem); // Làm tròn và chuyển sang int
-
-                // Xác định trạng thái pass/trượt
-                int pass = diemTongKet >= 5 ? 1 : 0;
-
-                // Lấy MaLop từ cơ sở dữ liệu
-                int maLop = -1;  // Khởi tạo với giá trị mặc định
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    try
-                    {
-                        conn.Open();
-
-                        // Lấy MaLop từ cơ sở dữ liệu
-                        string query = "SELECT MaLop FROM Diem WHERE MaSinhVien = @MaSinhVien";
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
-
-                            var result = cmd.ExecuteScalar();
-                            if (result != null)
-                            {
-                                maLop = Convert.ToInt32(result);
-                            }
-                            else
-                            {
-                                MessageBox.Show($"Không tìm thấy lớp cho sinh viên có mã {maSinhVien}.");
-                                continue;  // Nếu không tìm thấy MaLop, tiếp tục vòng lặp
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi lấy MaLop từ cơ sở dữ liệu: " + ex.Message);
-                        continue;  // Nếu có lỗi khi truy vấn, tiếp tục vòng lặp
-                    }
-                }
+               
+                // Tính và cập nhật trạng thái Pass (nếu DiemChuyenCan < 7, Pass = 0; ngược lại Pass = 1)
+                int pass = (diemChuyenCan < 7 || diemTongKet < 5) ? 0 : 1;
 
                 // Câu truy vấn cập nhật
                 string updateQuery = @"
-                            UPDATE Diem 
-                            SET 
-                                DiemGiuaKy = @DiemGiuaKy,
-                                DiemCuoiKy = @DiemCuoiKy,
-                                DiemTongKet = @DiemTongKet,
-                                DiemBaiTap1 = @DiemBaiTap1,
-                                DiemBaiTap2 = @DiemBaiTap2,
-                                DiemLab1 = @DiemLab1,
-                                DiemLab2 = @DiemLab2
-                            WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop";
+                    UPDATE Diem 
+                    SET 
+                        DiemGiuaKy = @DiemGiuaKy,
+                        DiemCuoiKy = @DiemCuoiKy,
+                        DiemTongKet = @DiemTongKet,
+                        DiemBaiTap1 = @DiemBaiTap1,
+                        DiemBaiTap2 = @DiemBaiTap2,
+                        DiemLab1 = @DiemLab1,
+                        DiemLab2 = @DiemLab2
+                    WHERE MaSinhVien = @MaSinhVien AND MaLop = @MaLop;";
 
                 // Kết nối và thực hiện truy vấn cập nhật
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -156,8 +152,6 @@ namespace QLSV.DSLHoc
                     connection.Open();
                     using (SqlCommand command = new SqlCommand(updateQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
-                        command.Parameters.AddWithValue("@MaLop", maLop);  // Sử dụng MaLop lấy từ cơ sở dữ liệu
                         command.Parameters.AddWithValue("@DiemGiuaKy", diemGiuaKy);
                         command.Parameters.AddWithValue("@DiemCuoiKy", diemCuoiKy);
                         command.Parameters.AddWithValue("@DiemTongKet", diemTongKet); // Sử dụng diemTongKet kiểu int
@@ -165,10 +159,14 @@ namespace QLSV.DSLHoc
                         command.Parameters.AddWithValue("@DiemBaiTap2", diemBaiTap2);
                         command.Parameters.AddWithValue("@DiemLab1", diemLab1);
                         command.Parameters.AddWithValue("@DiemLab2", diemLab2);
+                        command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                        command.Parameters.AddWithValue("@MaLop", this.MaLop); // Sử dụng MaLop từ form con
 
                         command.ExecuteNonQuery();
                     }
                 }
+                UpdatePass(connectionString, maSinhVien, MaLop, pass);
+
             }
 
             MessageBox.Show("Cập nhật điểm thành công!");

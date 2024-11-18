@@ -33,15 +33,15 @@ namespace QLSV.DSLHoc
         {
             string connectionString = @"Data Source=(localdb)\mssqllocaldb;Initial Catalog=QLSV;Integrated Security=True";
             string query = @"
-    SELECT 
-        lh.MaLop, 
-        lh.TenLop, 
-        mh.TenMon, 
-        hk.TenHocKy + ' (' + CAST(hk.Nam AS NVARCHAR) + ')' AS HocKyNam 
-    FROM Lop_Hoc lh
-    INNER JOIN Mon_Hoc mh ON lh.MaMon = mh.MaMon
-    INNER JOIN Hoc_Ky hk ON lh.MaHocKy = hk.MaHocKy
-    WHERE lh.DaXoa = 0";
+                            SELECT 
+                                lh.MaLop, 
+                                lh.TenLop, 
+                                mh.TenMon, 
+                                hk.TenHocKy + ' (' + CAST(hk.Nam AS NVARCHAR) + ')' AS HocKyNam 
+                            FROM Lop_Hoc lh
+                            INNER JOIN Mon_Hoc mh ON lh.MaMon = mh.MaMon
+                            INNER JOIN Hoc_Ky hk ON lh.MaHocKy = hk.MaHocKy
+                            WHERE lh.DaXoa = 0";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -169,7 +169,7 @@ namespace QLSV.DSLHoc
                 // Hiển thị trên form ViewDSSVTrongLopHoc
                 if (dtSinhVienDiem != null)
                 {
-                    ViewDSSVTrongLopHoc form = new ViewDSSVTrongLopHoc(dtSinhVienDiem, TenLop);
+                    ViewDSSVTrongLopHoc form = new ViewDSSVTrongLopHoc(dtSinhVienDiem, TenLop, maLop);
                     form.Show();
                 } 
             }

@@ -1,4 +1,5 @@
 ﻿using QLSV.DSLHoc;
+using QLSV.DSSV;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -137,7 +138,6 @@ namespace QLSV
 
         private void button6_Click(object sender, EventArgs e)
         {
-            loadMenu(new DSSV.ThongKe());
         }
 
         private void button3_Click(object sender, EventArgs e)

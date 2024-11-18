@@ -63,11 +63,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(193, 9);
+            this.label1.Location = new System.Drawing.Point(364, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(333, 32);
+            this.label1.Size = new System.Drawing.Size(155, 32);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Nhập điểm sinh viên cho lớp ";
+            this.label1.Text = "Sinh viên lớp";
             // 
             // label2
             // 
